@@ -1,30 +1,302 @@
-const c=document.getElementById('game'),x=c.getContext('2d'),nc=document.getElementById('next'),nx=nc.getContext('2d');
-const W=10,H=20,B=30,NB=24,types=['I','J','L','O','S','T','Z'];
-const colors={I:'#00d9ff',J:'#4d7cff',L:'#ff9f1c',O:'#ffd60a',S:'#2ec4b6',T:'#b967ff',Z:'#ff4d6d'};
-const shapes={I:[[1,1,1,1]],J:[[1,0,0],[1,1,1]],L:[[0,0,1],[1,1,1]],O:[[1,1],[1,1]],S:[[0,1,1],[1,1,0]],T:[[0,1,0],[1,1,1]],Z:[[1,1,0],[0,1,1]]};
-const speeds=[800,650,500,350,220], need=[0,5,12,20,30];
-const themes=['第一關・星空啟程','第二關・海洋世界','第三關・夢幻紫境','第四關・火焰挑戰','第五關・翡翠王國'];
-let board,p,next,score=0,lines=0,level=1,running=false,paused=false,over=false,last=0,timer=0,raf;
-let high=+localStorage.getItem('tetrisHigh')||0; document.getElementById('high').textContent=high;
-const el=id=>document.getElementById(id);
-function makeBoard(){return Array.from({length:H},()=>Array(W).fill(0))}
-function rand(){let t=types[Math.floor(Math.random()*7)];return{t,shape:shapes[t].map(r=>[...r]),x:0,y:0}}
-function start(){board=makeBoard();score=0;lines=0;level=1;running=true;paused=false;over=false;timer=0;last=performance.now();next=rand();theme();spawn();hide();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
-function spawn(){p=next||rand();p.x=Math.floor((W-p.shape[0].length)/2);p.y=0;next=rand();drawNext();if(hit(p)){over=true;running=false;show('遊戲結束\n請重新開始')}} 
-function hit(q,dx=0,dy=0,s=q.shape){for(let y=0;y<s.length;y++)for(let z=0;z<s[y].length;z++)if(s[y][z]){let X=q.x+z+dx,Y=q.y+y+dy;if(X<0||X>=W||Y>=H||(Y>=0&&board[Y][X]))return true}return false}
-function merge(){p.shape.forEach((r,y)=>r.forEach((v,z)=>{if(v&&p.y+y>=0)board[p.y+y][p.x+z]=p.t}))}
-function rotate(){let s=p.shape.map(r=>[...r]);let r=s[0].map((_,i)=>s.map(a=>a[i]).reverse());for(let dx of [0,-1,1,-2,2])if(!hit(p,dx,0,r)){p.shape=r;p.x+=dx;return}}
-function clear(){let n=0;for(let y=H-1;y>=0;y--)if(board[y].every(Boolean)){board.splice(y,1);board.unshift(Array(W).fill(0));n++;y++}if(!n)return;score+=[0,100,300,500,800][n]*level;lines+=n;if(score>high){high=score;localStorage.setItem('tetrisHigh',high)}let nl=Math.min(5,1+need.filter(v=>v>0&&lines>=v).length);if(nl>level){level=nl;theme();show('🎉 '+themes[level-1]+'\n速度提升！');setTimeout(()=>{if(running&&!paused)hide()},900)}if(lines>=30){level=5;theme();over=true;running=false;show('🏆 恭喜完成五個關卡！\n你是俄羅斯方塊高手！')}}
-function drop(){if(!running||paused||over)return;if(!hit(p,0,1))p.y++;else{merge();clear();if(!over)spawn()}timer=0}
-function hard(){if(!running||paused||over)return;while(!hit(p,0,1))p.y++;score+=2;drop()}
-function action(a){if(a==='pause'){if(!running||over)return;paused=!paused;paused?show('⏸ 暫停'):hide();return}if(!running||paused||over)return;if(a==='left'&&!hit(p,-1,0))p.x--;if(a==='right'&&!hit(p,1,0))p.x++;if(a==='rotate')rotate();if(a==='down')drop();if(a==='drop')hard();ui()}
-function loop(t){let d=t-last;last=t;if(running&&!paused&&!over){timer+=d;if(timer>speeds[level-1])drop()}draw();ui();if(running||paused)raf=requestAnimationFrame(loop)}
-function cell(q,X,Y,col,size=B){q.fillStyle=col;q.fillRect(X*size+1,Y*size+1,size-2,size-2);q.fillStyle='#ffffff38';q.fillRect(X*size+3,Y*size+3,size-8,4)}
-function draw(){x.fillStyle='#0b1020';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#ffffff12';for(let i=0;i<=W;i++){x.beginPath();x.moveTo(i*B,0);x.lineTo(i*B,H*B);x.stroke()}for(let i=0;i<=H;i++){x.beginPath();x.moveTo(0,i*B);x.lineTo(W*B,i*B);x.stroke()}board.forEach((r,y)=>r.forEach((t,z)=>{if(t)cell(x,z,y,colors[t])}));if(p)p.shape.forEach((r,y)=>r.forEach((v,z)=>{if(v)cell(x,p.x+z,p.y+y,colors[p.t])}));if(paused){x.fillStyle='#0009';x.fillRect(0,0,c.width,c.height)}}
-function drawNext(){nx.fillStyle='#101522';nx.fillRect(0,0,120,120);let s=next.shape,ox=(5-s[0].length)/2,oy=(5-s.length)/2;s.forEach((r,y)=>r.forEach((v,z)=>{if(v)cell(nx,ox+z,oy+y,colors[next.t],NB)}))}
-function ui(){el('level').textContent=level+' / 5';el('score').textContent=score;el('lines').textContent=lines;el('high').textContent=high}
-function theme(){document.body.className='level'+level;el('theme').textContent=themes[level-1]}
-function show(t){el('msg').textContent=t;el('msg').classList.remove('hidden')}function hide(){el('msg').classList.add('hidden')}
-document.querySelectorAll('[data-a]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();action(b.dataset.a)}));
-document.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp',' '].includes(e.key))e.preventDefault();({ArrowLeft:()=>action('left'),ArrowRight:()=>action('right'),ArrowDown:()=>action('down'),ArrowUp:()=>action('rotate'),' ':()=>action('drop'),p:()=>action('pause'),P:()=>action('pause')}[e.key]?.())});
-el('start').onclick=start; board=makeBoard();theme();ui();draw();drawNext();
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const nextCanvas = document.getElementById("next");
+const nextCtx = nextCanvas.getContext("2d");
+
+const COLS = 10, ROWS = 20, BLOCK = 30;
+const NEXT_BLOCK = 24;
+
+const COLORS = {
+  I: "#00d9ff", J: "#4d7cff", L: "#ff9f1c",
+  O: "#ffd60a", S: "#2ec4b6", T: "#b967ff", Z: "#ff4d6d"
+};
+
+const SHAPES = {
+  I: [[1,1,1,1]],
+  J: [[1,0,0],[1,1,1]],
+  L: [[0,0,1],[1,1,1]],
+  O: [[1,1],[1,1]],
+  S: [[0,1,1],[1,1,0]],
+  T: [[0,1,0],[1,1,1]],
+  Z: [[1,1,0],[0,1,1]]
+};
+
+const TYPES = Object.keys(SHAPES);
+const LEVEL_SPEED = [800, 650, 500, 350, 220];
+const LEVEL_LINES = [0, 5, 12, 20, 30];
+
+let board, piece, nextPiece;
+let score = 0, lines = 0, level = 1;
+let gameOver = false, paused = false, running = false;
+let dropCounter = 0, lastTime = 0, animationId;
+
+const levelEl = document.getElementById("level");
+const scoreEl = document.getElementById("score");
+const linesEl = document.getElementById("lines");
+const highScoreEl = document.getElementById("highScore");
+const messageEl = document.getElementById("message");
+const startBtn = document.getElementById("startBtn");
+
+let highScore = Number(localStorage.getItem("tetrisHighScore") || 0);
+highScoreEl.textContent = highScore;
+
+function createBoard() {
+  return Array.from({length: ROWS}, () => Array(COLS).fill(null));
+}
+
+function randomPiece() {
+  const type = TYPES[Math.floor(Math.random() * TYPES.length)];
+  const shape = SHAPES[type].map(row => [...row]);
+  return {
+    type,
+    shape,
+    x: Math.floor((COLS - shape[0].length) / 2),
+    y: 0
+  };
+}
+
+function resetGame() {
+  board = createBoard();
+  score = 0;
+  lines = 0;
+  level = 1;
+  gameOver = false;
+  paused = false;
+  running = true;
+  dropCounter = 0;
+  lastTime = performance.now();
+  nextPiece = randomPiece();
+  spawnPiece();
+  hideMessage();
+  updateUI();
+  startBtn.textContent = "重新開始";
+  cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(update);
+}
+
+function spawnPiece() {
+  piece = nextPiece || randomPiece();
+  piece.x = Math.floor((COLS - piece.shape[0].length) / 2);
+  piece.y = 0;
+  nextPiece = randomPiece();
+  drawNext();
+
+  if (collides(piece)) {
+    gameOver = true;
+    running = false;
+    showMessage("遊戲結束\n按「重新開始」再挑戰一次");
+  }
+}
+
+function collides(p, dx = 0, dy = 0, testShape = p.shape) {
+  for (let y = 0; y < testShape.length; y++) {
+    for (let x = 0; x < testShape[y].length; x++) {
+      if (!testShape[y][x]) continue;
+      const nx = p.x + x + dx;
+      const ny = p.y + y + dy;
+      if (nx < 0 || nx >= COLS || ny >= ROWS) return true;
+      if (ny >= 0 && board[ny][nx]) return true;
+    }
+  }
+  return false;
+}
+
+function merge() {
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value) board[piece.y + y][piece.x + x] = piece.type;
+    });
+  });
+}
+
+function rotate() {
+  const old = piece.shape;
+  const rotated = old[0].map((_, i) => old.map(row => row[i]).reverse());
+
+  const kicks = [0, -1, 1, -2, 2];
+  for (const dx of kicks) {
+    if (!collides(piece, dx, 0, rotated)) {
+      piece.shape = rotated;
+      piece.x += dx;
+      return;
+    }
+  }
+}
+
+function clearLines() {
+  let cleared = 0;
+  outer:
+  for (let y = ROWS - 1; y >= 0; y--) {
+    if (board[y].every(Boolean)) {
+      board.splice(y, 1);
+      board.unshift(Array(COLS).fill(null));
+      cleared++;
+      y++;
+    }
+  }
+
+  if (cleared) {
+    const points = [0, 100, 300, 500, 800];
+    score += points[cleared] * level;
+    lines += cleared;
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("tetrisHighScore", highScore);
+    }
+
+    const newLevel = Math.min(5, 1 + LEVEL_LINES.filter(n => lines >= n && n > 0).length);
+    if (newLevel > level) {
+      level = newLevel;
+      showMessage(`🎉 第 ${level} 關！\n速度提升！`);
+      setTimeout(() => {
+        if (running && !gameOver) hideMessage();
+      }, 900);
+    }
+
+    if (lines >= LEVEL_LINES[4]) {
+      level = 5;
+    }
+  }
+}
+
+function drop() {
+  if (!running || paused || gameOver) return;
+  if (!collides(piece, 0, 1)) {
+    piece.y++;
+  } else {
+    merge();
+    clearLines();
+    if (lines >= 30) {
+      gameOver = true;
+      running = false;
+      showMessage("🏆 恭喜完成五個關卡！\n你是俄羅斯方塊高手！");
+    } else {
+      spawnPiece();
+    }
+  }
+  dropCounter = 0;
+}
+
+function hardDrop() {
+  if (!running || paused || gameOver) return;
+  let distance = 0;
+  while (!collides(piece, 0, 1)) {
+    piece.y++;
+    distance++;
+  }
+  score += distance * 2;
+  drop();
+  updateUI();
+}
+
+function update(time = 0) {
+  const delta = time - lastTime;
+  lastTime = time;
+
+  if (running && !paused && !gameOver) {
+    dropCounter += delta;
+    if (dropCounter > LEVEL_SPEED[level - 1]) drop();
+  }
+
+  draw();
+  updateUI();
+
+  if (running || paused) animationId = requestAnimationFrame(update);
+}
+
+function drawCell(context, x, y, color, size = BLOCK) {
+  context.fillStyle = color;
+  context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
+  context.fillStyle = "rgba(255,255,255,.22)";
+  context.fillRect(x * size + 3, y * size + 3, size - 8, 4);
+}
+
+function drawGrid() {
+  ctx.strokeStyle = "rgba(255,255,255,.07)";
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= COLS; x++) {
+    ctx.beginPath(); ctx.moveTo(x * BLOCK, 0); ctx.lineTo(x * BLOCK, ROWS * BLOCK); ctx.stroke();
+  }
+  for (let y = 0; y <= ROWS; y++) {
+    ctx.beginPath(); ctx.moveTo(0, y * BLOCK); ctx.lineTo(COLS * BLOCK, y * BLOCK); ctx.stroke();
+  }
+}
+
+function draw() {
+  ctx.fillStyle = "#101522";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawGrid();
+
+  board.forEach((row, y) => row.forEach((type, x) => {
+    if (type) drawCell(ctx, x, y, COLORS[type]);
+  }));
+
+  if (piece) {
+    piece.shape.forEach((row, y) => row.forEach((v, x) => {
+      if (v) drawCell(ctx, piece.x + x, piece.y + y, COLORS[piece.type]);
+    }));
+  }
+
+  if (paused) {
+    ctx.fillStyle = "rgba(0,0,0,.55)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 34px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("暫停", canvas.width / 2, canvas.height / 2);
+  }
+}
+
+function drawNext() {
+  nextCtx.fillStyle = "#101522";
+  nextCtx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
+  if (!nextPiece) return;
+
+  const s = nextPiece.shape;
+  const offsetX = (5 - s[0].length) / 2;
+  const offsetY = (5 - s.length) / 2;
+  s.forEach((row, y) => row.forEach((v, x) => {
+    if (v) drawCell(nextCtx, offsetX + x, offsetY + y, COLORS[nextPiece.type], NEXT_BLOCK);
+  }));
+}
+
+function updateUI() {
+  levelEl.textContent = `${level} / 5`;
+  scoreEl.textContent = score;
+  linesEl.textContent = lines;
+  highScoreEl.textContent = highScore;
+}
+
+function showMessage(text) {
+  messageEl.textContent = text;
+  messageEl.classList.remove("hidden");
+}
+
+function hideMessage() {
+  messageEl.classList.add("hidden");
+}
+
+document.addEventListener("keydown", e => {
+  if (!running && e.key.toLowerCase() !== "p") return;
+
+  if (["ArrowLeft","ArrowRight","ArrowDown","ArrowUp"," "].includes(e.key)) {
+    e.preventDefault();
+  }
+
+  if (e.key === "ArrowLeft" && !paused && !collides(piece, -1, 0)) piece.x--;
+  else if (e.key === "ArrowRight" && !paused && !collides(piece, 1, 0)) piece.x++;
+  else if (e.key === "ArrowDown") drop();
+  else if (e.key === "ArrowUp" && !paused) rotate();
+  else if (e.key === " ") hardDrop();
+  else if (e.key.toLowerCase() === "p" && !gameOver) {
+    paused = !paused;
+    if (paused) showMessage("⏸ 暫停");
+    else hideMessage();
+  }
+});
+
+startBtn.addEventListener("click", resetGame);
+
+draw();
+drawNext();

@@ -1,59 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#182848">
-  <title>國中英文單字冒險</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>俄羅斯方塊｜五關挑戰</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main id="app">
-    <section id="start-screen" class="screen active">
-      <div class="hero-card">
-        <div class="logo">📚✨</div>
-        <h1>英文單字冒險</h1>
-        <p>選擇單字的開頭字母，挑戰 5 個關卡！</p>
-        <div id="letter-buttons" class="letter-grid"></div>
-        <p class="hint">每個關卡 10 題，手機直接點選答案即可。</p>
-      </div>
+<div class="game-wrap">
+  <header>
+    <h1>🧱 俄羅斯方塊</h1>
+    <p>五關挑戰版</p>
+  </header>
+
+  <main class="game-area">
+    <section class="board-panel">
+      <canvas id="game" width="300" height="600"></canvas>
+      <div id="message" class="message hidden"></div>
     </section>
 
-    <section id="game-screen" class="screen">
-      <header class="topbar">
-        <button id="home-btn" class="small-btn">⌂</button>
-        <div>
-          <div id="level-name">第 1 關</div>
-          <div id="progress-text">1 / 10</div>
-        </div>
-        <div id="score-badge">0 分</div>
-      </header>
-
-      <div class="progress-track"><div id="progress-bar"></div></div>
-
-      <div class="game-card">
-        <div id="question-type" class="question-type"></div>
-        <div id="question" class="question"></div>
-        <button id="speak-btn" class="speak-btn hidden">🔊 再聽一次</button>
-        <div id="answer-area"></div>
-        <div id="feedback" class="feedback"></div>
-        <button id="next-btn" class="next-btn hidden">下一題 →</button>
+    <aside class="side-panel">
+      <div class="card">
+        <h2>遊戲資訊</h2>
+        <div class="stat"><span>關卡</span><strong id="level">1 / 5</strong></div>
+        <div class="stat"><span>分數</span><strong id="score">0</strong></div>
+        <div class="stat"><span>消除行數</span><strong id="lines">0</strong></div>
+        <div class="stat"><span>最高分</span><strong id="highScore">0</strong></div>
       </div>
-    </section>
 
-    <section id="level-screen" class="screen">
-      <div class="result-card">
-        <div id="result-icon">🏆</div>
-        <h2 id="result-title">第 1 關完成！</h2>
-        <div id="result-score"></div>
-        <p id="result-message"></p>
-        <button id="retry-btn" class="primary-btn">再玩一次</button>
-        <button id="next-level-btn" class="primary-btn">挑戰下一關 →</button>
-        <button id="back-home-btn" class="secondary-btn">回到字母選擇</button>
+      <div class="card next-card">
+        <h2>下一個</h2>
+        <canvas id="next" width="120" height="120"></canvas>
       </div>
-    </section>
+
+      <div class="card controls">
+        <h2>操作方式</h2>
+        <p>⬅️ ➡️ 左右移動</p>
+        <p>⬇️ 加速下降</p>
+        <p>⬆️ 旋轉方塊</p>
+        <p>空白鍵：直接落下</p>
+        <p>P：暫停／繼續</p>
+      </div>
+
+      <button id="startBtn">開始新遊戲</button>
+    </aside>
   </main>
 
-  <script src="game.js"></script>
+  <footer>完成第 5 關即可過關 🎉</footer>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
