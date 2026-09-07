@@ -1,99 +1,452 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  background: linear-gradient(135deg, #182848, #4b6cb7);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  padding: 24px;
+    min-height: 100vh;
+
+    font-family:
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #182848,
+            #4b6cb7
+        );
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 20px;
+
+    /* 防止手機滑動頁面 */
+    overscroll-behavior: none;
 }
 
-.game-wrap { width: min(900px, 100%); }
 
-header { text-align: center; margin-bottom: 18px; }
-header h1 { margin: 0; font-size: 2.2rem; }
-header p { margin: 5px 0 0; opacity: .85; }
+/* ========================= */
+/* 主畫面 */
+/* ========================= */
 
-.game-area {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 22px;
+.game-container {
+    width: min(900px, 100%);
 }
 
-.board-panel {
-  position: relative;
-  border: 5px solid rgba(255,255,255,.85);
-  border-radius: 12px;
-  background: #111827;
-  box-shadow: 0 18px 45px rgba(0,0,0,.3);
+h1 {
+    text-align: center;
+
+    margin: 0;
+
+    font-size: 2.2rem;
 }
 
-#game { display: block; width: 300px; height: 600px; }
+.subtitle {
+    text-align: center;
 
-.side-panel { width: 250px; display: grid; gap: 14px; }
+    margin: 5px 0 20px;
 
-.card {
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 14px;
-  padding: 15px;
-  backdrop-filter: blur(8px);
+    opacity: 0.85;
 }
 
-.card h2 { font-size: 1rem; margin: 0 0 10px; }
 
-.stat {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(255,255,255,.1);
+/* ========================= */
+/* 遊戲與資訊 */
+/* ========================= */
+
+.game-layout {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    gap: 20px;
 }
 
-.stat:last-child { border-bottom: 0; }
 
-#next { display: block; margin: auto; background: rgba(0,0,0,.18); border-radius: 8px; }
+/* ========================= */
+/* 遊戲棋盤 */
+/* ========================= */
 
-.controls p { margin: 6px 0; font-size: .92rem; }
+.game-board-container {
 
-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 13px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  background: #ffd166;
-  color: #1f2937;
-  box-shadow: 0 6px 15px rgba(0,0,0,.2);
+    position: relative;
+
+    background: #101522;
+
+    border: 5px solid white;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,0.35);
 }
 
-button:hover { transform: translateY(-1px); }
+#game {
 
-footer { text-align: center; margin-top: 16px; opacity: .8; }
+    display: block;
+
+    width: 300px;
+    height: 600px;
+
+    /* 手機不讓瀏覽器處理滑動 */
+    touch-action: none;
+}
+
+
+/* ========================= */
+/* 遊戲訊息 */
+/* ========================= */
 
 .message {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.72);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 30px;
-  font-size: 1.8rem;
-  font-weight: bold;
-  border-radius: 7px;
-  white-space: pre-line;
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,0.75);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    font-size: 1.7rem;
+
+    font-weight: bold;
+
+    white-space: pre-line;
+
+    border-radius: 8px;
 }
 
-.hidden { display: none; }
+.hidden {
+    display: none;
+}
+
+
+/* ========================= */
+/* 資訊區 */
+/* ========================= */
+
+.info-panel {
+
+    width: 250px;
+
+    display: grid;
+
+    gap: 12px;
+}
+
+.info-box {
+
+    background:
+        rgba(255,255,255,0.12);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.2);
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    backdrop-filter: blur(8px);
+}
+
+.info-box h2 {
+
+    font-size: 1rem;
+
+    margin:
+        0 0 10px;
+}
+
+.info-box p {
+
+    margin: 6px 0;
+
+    font-size: 0.9rem;
+}
+
+.info-box p span {
+
+    float: right;
+
+    font-weight: bold;
+}
+
+
+/* ========================= */
+/* 下一個方塊 */
+/* ========================= */
+
+.next-box canvas {
+
+    display: block;
+
+    margin: auto;
+
+    background: #101522;
+
+    border-radius: 8px;
+}
+
+
+/* ========================= */
+/* 開始按鈕 */
+/* ========================= */
+
+#startBtn {
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background: #ffd166;
+
+    color: #222;
+
+    box-shadow:
+        0 6px 15px
+        rgba(0,0,0,0.25);
+}
+
+
+/* ========================= */
+/* 手機控制區 */
+/* ========================= */
+
+.mobile-controls {
+
+    display: none;
+
+    width: min(330px, 100%);
+
+    margin: 15px auto 0;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+}
+
+
+.control-btn {
+
+    min-height: 58px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 1.5rem;
+
+    font-weight: bold;
+
+    background: white;
+
+    color: #222;
+
+    box-shadow:
+        0 5px 10px
+        rgba(0,0,0,0.25);
+
+    touch-action: manipulation;
+
+    user-select: none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+
+.control-btn small {
+
+    display: block;
+
+    font-size: 0.6rem;
+
+}
+
+
+.rotate-btn {
+    background: #ffd166;
+}
+
+.drop-btn {
+    background: #ff9f1c;
+}
+
+.pause-btn {
+    background: #b8c0ff;
+}
+
+
+.control-btn:active {
+
+    transform:
+        scale(0.94);
+}
+
+
+/* ========================= */
+/* 頁尾 */
+/* ========================= */
+
+.footer {
+
+    text-align: center;
+
+    margin-top: 15px;
+
+    opacity: 0.8;
+}
+
+
+/* ========================= */
+/* 📱 手機版 */
+/* ========================= */
 
 @media (max-width: 680px) {
-  body { padding: 12px; }
-  .game-area { flex-direction: column; align-items: center; }
-  .side-panel { width: min(300px, 100%); }
+
+    body {
+
+        padding:
+            8px 8px 15px;
+    }
+
+    h1 {
+
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+
+        font-size: 0.8rem;
+
+        margin-bottom: 8px;
+    }
+
+
+    .game-layout {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 8px;
+    }
+
+
+    .game-board-container {
+
+        border-width: 3px;
+    }
+
+
+    #game {
+
+        width:
+            min(78vw, 300px);
+
+        height: auto;
+
+        aspect-ratio:
+            1 / 2;
+    }
+
+
+    .info-panel {
+
+        width:
+            min(330px, 100%);
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 8px;
+    }
+
+
+    .info-panel
+    .info-box:first-child {
+
+        grid-column:
+            1 / -1;
+    }
+
+
+    .next-box,
+    .computer-help {
+
+        display: none;
+    }
+
+
+    #startBtn {
+
+        grid-column:
+            1 / -1;
+    }
+
+
+    /* 顯示手機按鈕 */
+
+    .mobile-controls {
+
+        display: grid;
+    }
+
+
+    .footer {
+
+        font-size: 0.8rem;
+    }
+}
+
+
+/* ========================= */
+/* 小螢幕手機 */
+/* ========================= */
+
+@media
+(max-width: 680px)
+and
+(max-height: 760px) {
+
+    #game {
+
+        width:
+            min(62vh, 260px);
+    }
+
+    .control-btn {
+
+        min-height: 48px;
+    }
 }
