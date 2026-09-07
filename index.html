@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>俄羅斯方塊 Tetris</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>俄羅斯方塊｜五關挑戰</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="game">
-    <section class="board-wrap">
-      <h1>俄羅斯方塊</h1>
-      <canvas id="board" width="300" height="600" aria-label="俄羅斯方塊遊戲區"></canvas>
-      <div class="controls">
-        <button id="startBtn">開始 / 重新開始</button>
-        <button id="pauseBtn">暫停</button>
-      </div>
-      <p class="hint">← → 移動　↑ 旋轉　↓ 加速　空白鍵瞬間落下</p>
+<div class="game-wrap">
+  <header>
+    <h1>🧱 俄羅斯方塊</h1>
+    <p>五關挑戰版</p>
+  </header>
+
+  <main class="game-area">
+    <section class="board-panel">
+      <canvas id="game" width="300" height="600"></canvas>
+      <div id="message" class="message hidden"></div>
     </section>
 
-    <aside class="panel">
+    <aside class="side-panel">
       <div class="card">
         <h2>遊戲資訊</h2>
-        <p>分數：<strong id="score">0</strong></p>
-        <p>消除行數：<strong id="lines">0</strong></p>
-        <p>等級：<strong id="level">1</strong></p>
-        <p>最高分：<strong id="highScore">0</strong></p>
+        <div class="stat"><span>關卡</span><strong id="level">1 / 5</strong></div>
+        <div class="stat"><span>分數</span><strong id="score">0</strong></div>
+        <div class="stat"><span>消除行數</span><strong id="lines">0</strong></div>
+        <div class="stat"><span>最高分</span><strong id="highScore">0</strong></div>
       </div>
-      <div class="card">
+
+      <div class="card next-card">
         <h2>下一個</h2>
         <canvas id="next" width="120" height="120"></canvas>
       </div>
-      <div class="card">
+
+      <div class="card controls">
         <h2>操作方式</h2>
-        <ul>
-          <li>← →：左右移動</li>
-          <li>↑：旋轉方塊</li>
-          <li>↓：加速下降</li>
-          <li>空白鍵：直接落到底</li>
-          <li>P：暫停 / 繼續</li>
-        </ul>
+        <p>⬅️ ➡️ 左右移動</p>
+        <p>⬇️ 加速下降</p>
+        <p>⬆️ 旋轉方塊</p>
+        <p>空白鍵：直接落下</p>
+        <p>P：暫停／繼續</p>
       </div>
-      <div id="message" class="message">按「開始 / 重新開始」開始遊戲</div>
+
+      <button id="startBtn">開始新遊戲</button>
     </aside>
   </main>
-  <script src="script.js"></script>
+
+  <footer>完成第 5 關即可過關 🎉</footer>
+</div>
+<script src="script.js"></script>
 </body>
 </html>

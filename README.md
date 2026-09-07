@@ -1,30 +1,43 @@
-# 俄羅斯方塊 Tetris
+# 🧱 俄羅斯方塊｜五關挑戰版
 
-純 HTML + CSS + JavaScript 製作，不需要後端或任何套件。
+這是一款可以直接放到 GitHub Pages 執行的純 HTML / CSS / JavaScript 俄羅斯方塊遊戲。
 
-## 功能
-- 經典 10×20 俄羅斯方塊
-- 七種基本方塊
-- 左右移動、旋轉、加速下降、瞬間落下
-- 下一個方塊預覽
-- 分數、消除行數、等級
-- 最高分儲存在瀏覽器 localStorage
-- 隨等級提升自動加快速度
-- 幽靈方塊提示落點
-- 電腦與手機瀏覽器皆可開啟
+## 遊戲特色
 
-## 放到 GitHub Pages
+- ⬆️ 上鍵：旋轉方塊
+- ⬅️ ➡️ 左右鍵：移動
+- ⬇️ 下鍵：加速下降
+- 空白鍵：直接落下
+- P：暫停／繼續
+- ⭐ 五個關卡
+- ⚡ 關卡越高，下降速度越快
+- 🏆 第 5 關完成後顯示過關訊息
+- 💾 自動保存最高分（瀏覽器 Local Storage）
+- 📱 支援手機／平板的響應式版面
 
-1. 在 GitHub 建立一個新的 Repository，例如 `tetris-game`。
-2. 上傳 `index.html`、`style.css`、`script.js`。
-3. 進入 Repository 的 **Settings → Pages**。
-4. 在 **Build and deployment** 選擇 **Deploy from a branch**。
-5. Branch 選 `main`，資料夾選 `/ (root)`，按 Save。
-6. 等待 GitHub Pages 部署完成後，即可從 Pages 網址遊玩。
+## 五個關卡
 
-## 操作
-- ← →：左右移動
-- ↑：旋轉
-- ↓：加速下降
-- 空白鍵：瞬間落下
-- P：暫停 / 繼續
+| 關卡 | 達成條件 | 下降速度 |
+|---|---:|---:|
+| 第 1 關 | 開始遊戲 | 800 ms |
+| 第 2 關 | 消除 5 行 | 650 ms |
+| 第 3 關 | 消除 12 行 | 500 ms |
+| 第 4 關 | 消除 20 行 | 350 ms |
+| 第 5 關 | 消除 30 行 | 220 ms |
+
+## 放到 GitHub 執行
+
+1. 在 GitHub 建立一個新的 Repository，例如 `tetris-game`
+2. 上傳：
+   - `index.html`
+   - `style.css`
+   - `script.js`
+3. 進入 Repository 的 **Settings → Pages**
+4. Source 選擇 **Deploy from a branch**
+5. Branch 選 `main`，資料夾選 `/ (root)`
+6. 儲存後等待 GitHub Pages 部署
+7. 開啟 GitHub 提供的網址即可玩
+
+## 注意
+
+這個版本不需要 Node.js、Unity 或資料庫，直接由瀏覽器執行，因此很適合放在 GitHub Pages。
