@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>俄羅斯方塊 Tetris</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game">
+    <section class="board-wrap">
+      <h1>俄羅斯方塊</h1>
+      <canvas id="board" width="300" height="600" aria-label="俄羅斯方塊遊戲區"></canvas>
+      <div class="controls">
+        <button id="startBtn">開始 / 重新開始</button>
+        <button id="pauseBtn">暫停</button>
+      </div>
+      <p class="hint">← → 移動　↑ 旋轉　↓ 加速　空白鍵瞬間落下</p>
+    </section>
+
+    <aside class="panel">
+      <div class="card">
+        <h2>遊戲資訊</h2>
+        <p>分數：<strong id="score">0</strong></p>
+        <p>消除行數：<strong id="lines">0</strong></p>
+        <p>等級：<strong id="level">1</strong></p>
+        <p>最高分：<strong id="highScore">0</strong></p>
+      </div>
+      <div class="card">
+        <h2>下一個</h2>
+        <canvas id="next" width="120" height="120"></canvas>
+      </div>
+      <div class="card">
+        <h2>操作方式</h2>
+        <ul>
+          <li>← →：左右移動</li>
+          <li>↑：旋轉方塊</li>
+          <li>↓：加速下降</li>
+          <li>空白鍵：直接落到底</li>
+          <li>P：暫停 / 繼續</li>
+        </ul>
+      </div>
+      <div id="message" class="message">按「開始 / 重新開始」開始遊戲</div>
+    </aside>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
