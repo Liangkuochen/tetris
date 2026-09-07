@@ -2,51 +2,32 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>俄羅斯方塊｜五關挑戰</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>俄羅斯方塊｜五關冒險</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="game-wrap">
-  <header>
-    <h1>🧱 俄羅斯方塊</h1>
-    <p>五關挑戰版</p>
-  </header>
-
-  <main class="game-area">
-    <section class="board-panel">
-      <canvas id="game" width="300" height="600"></canvas>
-      <div id="message" class="message hidden"></div>
-    </section>
-
-    <aside class="side-panel">
-      <div class="card">
-        <h2>遊戲資訊</h2>
-        <div class="stat"><span>關卡</span><strong id="level">1 / 5</strong></div>
-        <div class="stat"><span>分數</span><strong id="score">0</strong></div>
-        <div class="stat"><span>消除行數</span><strong id="lines">0</strong></div>
-        <div class="stat"><span>最高分</span><strong id="highScore">0</strong></div>
-      </div>
-
-      <div class="card next-card">
-        <h2>下一個</h2>
-        <canvas id="next" width="120" height="120"></canvas>
-      </div>
-
-      <div class="card controls">
-        <h2>操作方式</h2>
-        <p>⬅️ ➡️ 左右移動</p>
-        <p>⬇️ 加速下降</p>
-        <p>⬆️ 旋轉方塊</p>
-        <p>空白鍵：直接落下</p>
-        <p>P：暫停／繼續</p>
-      </div>
-
-      <button id="startBtn">開始新遊戲</button>
-    </aside>
-  </main>
-
-  <footer>完成第 5 關即可過關 🎉</footer>
+<div class="wrap">
+<header><h1>🧱 俄羅斯方塊</h1><p id="theme">第一關・星空啟程</p></header>
+<main>
+<section class="board"><canvas id="game" width="300" height="600"></canvas><div id="msg" class="hidden"></div></section>
+<aside>
+<div class="card">
+<h2>🎮 遊戲資訊</h2>
+<div>關卡 <b id="level">1 / 5</b></div>
+<div>分數 <b id="score">0</b></div>
+<div>消除行數 <b id="lines">0</b></div>
+<div>最高分 <b id="high">0</b></div>
+</div>
+<div class="card next"><h2>下一個</h2><canvas id="next" width="120" height="120"></canvas></div>
+<button id="start">開始新遊戲</button>
+</aside>
+</main>
+<div class="controls">
+<button data-a="left">◀</button><button data-a="rotate">↻</button><button data-a="right">▶</button>
+<button data-a="down">▼ 加速</button><button data-a="drop">⬇ 直接落下</button><button data-a="pause">Ⅱ 暫停</button>
+</div>
+<footer>📱 手機直接點擊按鈕即可操作</footer>
 </div>
 <script src="script.js"></script>
 </body>
