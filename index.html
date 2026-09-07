@@ -1,53 +1,159 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>俄羅斯方塊｜五關挑戰</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+
+    <!-- 手機響應式設定 -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>俄羅斯方塊｜五關挑戰</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="game-wrap">
-  <header>
+
+<div class="game-container">
+
     <h1>🧱 俄羅斯方塊</h1>
-    <p>五關挑戰版</p>
-  </header>
+    <p class="subtitle">五關挑戰版</p>
 
-  <main class="game-area">
-    <section class="board-panel">
-      <canvas id="game" width="300" height="600"></canvas>
-      <div id="message" class="message hidden"></div>
-    </section>
+    <div class="game-layout">
 
-    <aside class="side-panel">
-      <div class="card">
-        <h2>遊戲資訊</h2>
-        <div class="stat"><span>關卡</span><strong id="level">1 / 5</strong></div>
-        <div class="stat"><span>分數</span><strong id="score">0</strong></div>
-        <div class="stat"><span>消除行數</span><strong id="lines">0</strong></div>
-        <div class="stat"><span>最高分</span><strong id="highScore">0</strong></div>
-      </div>
+        <!-- 遊戲區 -->
+        <div class="game-board-container">
 
-      <div class="card next-card">
-        <h2>下一個</h2>
-        <canvas id="next" width="120" height="120"></canvas>
-      </div>
+            <canvas id="game"
+                    width="300"
+                    height="600">
+            </canvas>
 
-      <div class="card controls">
-        <h2>操作方式</h2>
-        <p>⬅️ ➡️ 左右移動</p>
-        <p>⬇️ 加速下降</p>
-        <p>⬆️ 旋轉方塊</p>
-        <p>空白鍵：直接落下</p>
-        <p>P：暫停／繼續</p>
-      </div>
+            <div id="message" class="message hidden"></div>
 
-      <button id="startBtn">開始新遊戲</button>
-    </aside>
-  </main>
+        </div>
 
-  <footer>完成第 5 關即可過關 🎉</footer>
+
+        <!-- 資訊區 -->
+        <div class="info-panel">
+
+            <div class="info-box">
+                <h2>遊戲資訊</h2>
+
+                <p>
+                    關卡：
+                    <span id="level">1 / 5</span>
+                </p>
+
+                <p>
+                    分數：
+                    <span id="score">0</span>
+                </p>
+
+                <p>
+                    消除行數：
+                    <span id="lines">0</span>
+                </p>
+
+                <p>
+                    最高分：
+                    <span id="highScore">0</span>
+                </p>
+            </div>
+
+
+            <!-- 下一個方塊 -->
+            <div class="info-box next-box">
+
+                <h2>下一個</h2>
+
+                <canvas id="next"
+                        width="120"
+                        height="120">
+                </canvas>
+
+            </div>
+
+
+            <!-- 電腦操作 -->
+            <div class="info-box computer-help">
+
+                <h2>⌨️ 電腦操作</h2>
+
+                <p>⬅️ ➡️ 移動</p>
+                <p>⬇️ 加速</p>
+                <p>⬆️ 旋轉</p>
+                <p>空白鍵：直接到底</p>
+                <p>P：暫停</p>
+
+            </div>
+
+
+            <button id="startBtn">
+                開始新遊戲
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- 手機觸控按鈕 -->
+    <!-- ========================= -->
+
+    <div class="mobile-controls">
+
+        <button
+            class="control-btn"
+            data-action="left">
+            ◀
+        </button>
+
+        <button
+            class="control-btn"
+            data-action="right">
+            ▶
+        </button>
+
+        <button
+            class="control-btn rotate-btn"
+            data-action="rotate">
+            🔄
+            <small>旋轉</small>
+        </button>
+
+        <button
+            class="control-btn"
+            data-action="down">
+            🔽
+        </button>
+
+        <button
+            class="control-btn drop-btn"
+            data-action="drop">
+            ⏬
+            <small>到底</small>
+        </button>
+
+        <button
+            class="control-btn pause-btn"
+            data-action="pause">
+            ⏸️
+            <small>暫停</small>
+        </button>
+
+    </div>
+
+
+    <p class="footer">
+        ⭐ 消除 30 行即可完成第 5 關！
+    </p>
+
 </div>
+
 <script src="script.js"></script>
+
 </body>
 </html>
